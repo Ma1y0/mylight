@@ -3,11 +3,17 @@
 sudo make install
 ```
 # Changing brightness without sudo
-### 1. Add a udev Rule
-Create a new udev rule file at `/etc/udev/rules.d/99-backlight-brightness.rules` with the following content:
+### 1. Add an udev Rule
+Identify your backlight device name by running:
 
 ```bash
-KERNEL=="amdgpu_bl2", SUBSYSTEM=="backlight", RUN+="/bin/chgrp backlight /sys/class/backlight/amdgpu_bl2/brightness", RUN+="/bin/chmod 0664 /sys/class/backlight/amdgpu_bl2/brightness"
+ls /sys/class/backlight/
+```
+
+Replace `<your_device>` below with the name of your backlight device (e.g., `amdgpu_bl2`). Then create a new udev rule file at `/etc/udev/rules.d/99-backlight-brightness.rules` with the following content:
+
+```bash
+KERNEL=="<your_device>", SUBSYSTEM=="backlight", RUN+="/bin/chgrp backlight /sys/class/backlight/<your_device>/brightness", RUN+="/bin/chmod 0664 /sys/class/backlight/<your_device>/brightness"
 ```
 
 ### 2. Create the Backlight Group
